@@ -31,6 +31,13 @@ public class App {
         probarBusquedaPorCodigo(equipoDAO);
 
         probarSimuladorConGrupoE(grupoDAO);
+
+        probarFaseGruposSecuencial(grupoDAO);
+
+        compararSecuencialVsParalelo(grupoDAO);
+
+        simularUnTorneo(grupoDAO);
+        ejecutarMonteCarlo(grupoDAO);
     }
 
     private static void mostrarResumen(
