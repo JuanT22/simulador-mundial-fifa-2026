@@ -28,7 +28,7 @@ public class App {
         mostrarAnfitriones(equipoDAO);
         probarBusquedaPorCodigo(equipoDAO);
 
-        probarSimuladorConGrupoI(grupoDAO);
+        probarSimuladorConGrupoE(grupoDAO);
     }
 
     private static void mostrarResumen(
@@ -122,19 +122,19 @@ public class App {
         System.out.println();
     }
 
-    private static void probarSimuladorConGrupoI(GrupoDAO grupoDAO) {
+    private static void probarSimuladorConGrupoE(GrupoDAO grupoDAO) {
         System.out.println();
-        System.out.println("Prueba del simulador: Grupo I del Mundial");
+        System.out.println("Prueba del simulador: Grupo E del Mundial");
         System.out.println("==========================================");
 
-        Grupo grupoI = grupoDAO
-            .buscarPorNombre("I")
-            .orElseThrow(() -> new RuntimeException("Grupo I no encontrado"));
+        Grupo grupoE = grupoDAO
+            .buscarPorNombre("E")
+            .orElseThrow(() -> new RuntimeException("Grupo E no encontrado"));
 
         SimuladorPartido simulador = new SimuladorPartidoFifa();
 
         // Los 6 enfrentamientos de un grupo de 4 (combinaciones C(4,2))
-        List<Equipo> equipos = grupoI.getEquipos();
+        List<Equipo> equipos = grupoE.getEquipos();
         System.out.println("\nUna simulación de cada enfrentamiento:");
         for (int i = 0; i < equipos.size(); i++) {
             for (int j = i + 1; j < equipos.size(); j++) {
@@ -146,29 +146,29 @@ public class App {
         }
 
         // Análisis de 1000 simulaciones de Francia vs Iraq
-        System.out.println("\n1000 simulaciones de Francia vs Iraq:");
-        Equipo francia = equipos.get(0); // posición 1: Francia
-        Equipo iraq = equipos.get(2); // posición 3: Iraq
+        System.out.println("\n1000 simulaciones de Ecuador vs Alemania:");
+        Equipo ecuador = equipos.get(0); // posición 1: Francia
+        Equipo alemania = equipos.get(2); // posición 3: Iraq
 
-        int ganaFra = 0,
+        int ganaEcu = 0,
             empates = 0,
-            ganaIrq = 0;
-        int totalGolesFra = 0,
-            totalGolesIrq = 0;
+            ganaAlm = 0;
+        int totalGolesEcu = 0,
+            totalGolesAlm = 0;
 
         for (int n = 0; n < 1000; n++) {
-            ResultadoPartido r = simulador.simular(francia, iraq, true);
-            totalGolesFra += r.getGolesLocal();
-            totalGolesIrq += r.getGolesVisitante();
+            ResultadoPartido r = simulador.simular(ecuador, alemania, true);
+            totalGolesEcu += r.getGolesLocal();
+            totalGolesAlm += r.getGolesVisitante();
             if (r.esEmpate()) empates++;
-            else if (r.getGanador().equals(francia)) ganaFra++;
-            else ganaIrq++;
+            else if (r.getGanador().equals(ecuador)) ganaEcu++;
+            else ganaAlm++;
         }
 
         System.out.printf(
-            "  Francia gana: %3d%% (%d veces)%n",
-            ganaFra / 10,
-            ganaFra
+            "  Ecuador gana: %3d%% (%d veces)%n",
+            ganaEcu / 10,
+            ganaEcu
         );
         System.out.printf(
             "  Empate:       %3d%% (%d veces)%n",
@@ -176,14 +176,14 @@ public class App {
             empates
         );
         System.out.printf(
-            "  Iraq gana:    %3d%% (%d veces)%n",
-            ganaIrq / 10,
-            ganaIrq
+            "  Alemania gana:    %3d%% (%d veces)%n",
+            ganaAlm / 10,
+            ganaAlm
         );
         System.out.printf(
-            "  Goles promedio: Francia %.2f - Iraq %.2f%n",
-            totalGolesFra / 1000.0,
-            totalGolesIrq / 1000.0
+            "  Goles promedio: Ecuador %.2f - Alemania %.2f%n",
+            totalGolesEcu / 1000.0,
+            totalGolesAlm / 1000.0
         );
     }
 }
