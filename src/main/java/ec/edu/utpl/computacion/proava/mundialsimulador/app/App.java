@@ -285,7 +285,7 @@ public class App {
         System.out.println("\n========== SIMULACIÓN COMPLETA ==========");
         SimuladorPartido simP = new SimuladorPartidoFifa();
         SimulacionDAO simDAO = new SimulacionDAO();
-        SimuladorTorneo torneo = new SimuladorTorneo(simP, 8, simDAO, true);
+        SimuladorTorneo torneo = new SimuladorTorneo(simP, 8, simDAO, false);
 
         List<Grupo> grupos = grupoDAO.listarTodos();
         SimuladorTorneo.ResultadoTorneo r = torneo.ejecutar(grupos, "Simulación demo");
@@ -300,15 +300,16 @@ public class App {
     // --- Análisis Monte Carlo ---
     private static void ejecutarMonteCarlo(GrupoDAO grupoDAO) {
         SimuladorPartido simP = new SimuladorPartidoFifa();
+        SimulacionDAO simDAO = new SimulacionDAO();
         // Para Monte Carlo NO persistimos (sería un montón de datos basura)
-        SimuladorTorneo torneo = new SimuladorTorneo(simP, 8, null, false);
+        SimuladorTorneo torneo = new SimuladorTorneo(simP, 12, simDAO, true);
 
         MonteCarlo mc = new MonteCarlo(torneo);
         List<Grupo> grupos = grupoDAO.listarTodos();
 
         // Empiece con pocas (10-20) mientras prueba que funciona
         // Para resultados estadísticamente sólidos: 100-1000
-        MonteCarlo.ResultadoMonteCarlo r = mc.ejecutar(grupos, 50);
+        MonteCarlo.ResultadoMonteCarlo r = mc.ejecutar(grupos, 1000);
         r.imprimirReporte();
     }
 
